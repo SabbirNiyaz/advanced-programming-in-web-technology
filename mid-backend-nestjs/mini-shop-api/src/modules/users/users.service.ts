@@ -33,7 +33,9 @@ export class UserService {
         const user = this.userRepo.create(userData);
         try {
             const savedUser = await this.userRepo.save(user);
-            return savedUser;
+
+            const { password, updatedAt, ...userData } = savedUser;
+            return userData as UserEntity; // Type assertion to exclude password from the returned user object
         } catch (error) {
             console.error('Error creating user:', error.message);
             throw new HttpException(`Error: ${error.message}`, HttpStatus.INTERNAL_SERVER_ERROR);
