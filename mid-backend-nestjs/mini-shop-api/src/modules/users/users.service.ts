@@ -4,7 +4,6 @@ import { UserEntity } from './entities/user.entity';
 import { ILike, Like, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-
 @Injectable()
 export class UserService {
     constructor(
@@ -13,10 +12,16 @@ export class UserService {
     //! Get all users
     async findAllUsers(): Promise<UserEntity[] | null> {
         const users = await this.userRepo.find({
+            relations: ['profile'],
             select: {
                 id: true,
                 name: true,
                 email: true,
+                profile: {
+                    id: true,
+                    phone: true,
+                    address: true,
+                },
             },
             order: {
                 id: 'ASC',
@@ -30,7 +35,17 @@ export class UserService {
     async findOneUser(id: number): Promise<UserEntity | null> {
         const user = await this.userRepo.findOne({
             where: { id },
-            select: ['id', 'name', 'email']
+            relations: ['profile'],
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                profile: {
+                    id: true,
+                    phone: true,
+                    address: true,
+                },
+            }
         });
         // console.log(`Fetched user with ID ${id}:`, user);
         if (user === null) {

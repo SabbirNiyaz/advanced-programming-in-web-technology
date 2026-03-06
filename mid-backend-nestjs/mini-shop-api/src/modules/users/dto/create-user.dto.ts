@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, MinLength, IsString, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsString, Matches, IsOptional } from 'class-validator';
+import { CreateProfileDto } from '../../profiles/dto/create-profile.dto';
 
 export class CreateUserDto {
     @IsNotEmpty({ message: 'Name is required' })
